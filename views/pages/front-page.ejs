@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body class="container">
+    <%let taskCompleted=0%>
+    <%let taskPending=0%>
+    <%for(let i=0; i<bodyHtml.length; i++){%>
+        <%if(!bodyHtml[i].taskCompleted) {%>
+            <%taskPending++%>
+        <%}%>
+        <%if(bodyHtml[i].taskCompleted) {%>
+            <%taskCompleted++%>
+        <%}%>
+    <%}%>
+<main>
+    <div style="border-style: solid;border-width: 2px; height: 200px; width: 100%  ;">
+        <h1>Task Stats</h1>
+        
+        <h4>Task Completed: <%=(taskCompleted/bodyHtml.length)*100%>%</h4>
+        <h4>Task Pending: <%=(taskPending/bodyHtml.length)*100%>%</h4>
+        <h4>Task Total: <%=bodyHtml.length%></h4>
+    </div>
+  <div style="width: 100%;">
+    <h1>Task Todo</h1>
+    <div style="width: 50%; float: left; text-align: left;">
+        <h2 style="text-decoration: underline;">Task Not Completed</h2>
+    <%for(let i=0; i<bodyHtml.length; i++){%>
+        <%if(!bodyHtml[i].taskCompleted) {%>
+            <h3>Task Name: <%=bodyHtml[i].taskName%></h3>
+        <h3>dueDate: <%=bodyHtml[i].dueDate%></h3>
+        <h3>users: <%=bodyHtml[i].users%></h3>
+        <h3>Task Completed: <%=bodyHtml[i].taskCompleted%></h3>
+        <form action="/task/update" method="post" id="eventForm2">
+            <div class="form-group">
+                <input type="checkbox" class="form-control" 
+                name="taskCompleted" value="true">
+                <label>Task Completed</label>
+                <input type="hidden" class="form-control" 
+                name="id" value=<%=bodyHtml[i].id%>>
+            </div>
+            <input class="button" type="submit" value="Submit" id="submitID2">
+        </form>
+        <%}%>
+    <%}%>
+    </div>
+
+    <div style="width: 50%; float: right; text-align: right;">
+        <h2 style="text-decoration: underline;">Task Completed</h2>
+    <%for(let i=0; i<bodyHtml.length; i++){%>
+        <%if(bodyHtml[i].taskCompleted) {%>
+        <h3>Task Name: <%=bodyHtml[i].taskName%></h3>
+        <h3>dueDate: <%=bodyHtml[i].dueDate%></h3>
+        <h3>users: <%=bodyHtml[i].users%></h3>
+        <%}%>
+    <%}%>
+    </div>
+  </div>
+
+    <div style="text-align: center;">
+        <form action="/task" method="post" id="eventForm">
+            <div class="form-group">
+                <input type="text" class="form-control" 
+                placeholder="Please enter Task Name" 
+                name="taskName">
+                <input type="date" class="form-control" 
+                placeholder="dd-mm-yyyy" 
+                name="dueDate">
+                <input type="text" class="form-control" 
+                placeholder="Please enter the user" 
+                name="users">
+                <input type="checkbox" class="form-control" 
+                name="taskCompleted" value="true">
+                <label>Task Completed</label>
+            </div>
+            <input class="button" type="submit" value="Submit" id="submitID">
+        </form>
+    </div>
+</main>
+<!-- <script>
+    $('#submitID').submit(function (e) {
+        e.preventDefault();
+        var fd = new FormData($(this)[0]);
+        $.ajax({
+            url: '/task',
+            data: fd,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                console.log(data);
+            }
+        });
+    });
+</script> -->
+</body>
+</html>
+
